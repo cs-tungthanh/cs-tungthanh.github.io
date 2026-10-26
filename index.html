@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tung Thanh – Software Engineer</title>
+  <meta name="description" content="Tung Thanh is a software engineer and solution architect in Vietnam, building scalable backend systems with Go, Node.js and TypeScript on AWS.">
+  <meta property="og:title" content="Tung Thanh – Software Engineer">
+  <meta property="og:description" content="Scalable backend systems with Go, Node.js and TypeScript on AWS. Plus a few side projects.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --bg-alt: #eef1f4;
+      --surface: #ffffff;
+      --text: #1f2328;
+      --text-muted: #59636e;
+      --border: #d1d9e0;
+      --accent: #0f766e;
+      --accent-soft: #d7f0ec;
+      --node: #ffffff;
+      --wire: #c3ccd5;
+      --dot: #0f766e;
+      --shadow: 0 16px 40px rgba(31, 35, 40, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0d1117;
+        --bg-alt: #111720;
+        --surface: #161b22;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --border: #2a313c;
+        --accent: #2dd4bf;
+        --accent-soft: #12302d;
+        --node: #161b22;
+        --wire: #3d4651;
+        --dot: #2dd4bf;
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0d1117;
+      --bg-alt: #111720;
+      --surface: #161b22;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --border: #2a313c;
+      --accent: #2dd4bf;
+      --accent-soft: #12302d;
+      --node: #161b22;
+      --wire: #3d4651;
+      --dot: #2dd4bf;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 "IBM Plex Sans", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    h1, h2, h3 { line-height: 1.15; margin: 0; }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 0; }
+    .logo { font: 500 16px "IBM Plex Mono", monospace; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 22px; font-size: 15px; }
+    .nav-links a { text-decoration: none; color: var(--text-muted); }
+    .nav-links a:hover { color: var(--text); }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding-top: 48px; padding-bottom: 88px; }
+    .kicker { font: 500 14px "IBM Plex Mono", monospace; color: var(--accent); margin: 0 0 14px; }
+    .hero h1 { font-size: clamp(42px, 6vw, 66px); font-weight: 700; letter-spacing: -0.025em; }
+    .hero .role { font-size: clamp(20px, 2.4vw, 24px); color: var(--text-muted); margin: 12px 0 22px; }
+    .hero p.lede { font-size: 18px; margin: 0 0 30px; max-width: 32em; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 8px;
+      font: 600 15px "IBM Plex Sans", sans-serif; text-decoration: none;
+      background: var(--accent); color: #fff; border: 1px solid var(--accent); transition: filter .15s;
+    }
+    :root[data-theme="dark"] .btn:not(.ghost) { color: #0d1117; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn:not(.ghost) { color: #0d1117; } }
+    .btn:hover { filter: brightness(1.08); }
+    .btn.ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn.ghost:hover { background: var(--surface); filter: none; }
+
+    .diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 14px 14px 10px; }
+    .diagram-bar { display: flex; gap: 6px; align-items: center; padding: 0 4px 10px; }
+    .diagram-bar i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+    .diagram-bar i:nth-child(1) { background: #ff5f57; }
+    .diagram-bar i:nth-child(2) { background: #febc2e; }
+    .diagram-bar i:nth-child(3) { background: #28c840; }
+    .diagram-bar span { margin-left: 8px; font: 13px "IBM Plex Mono", monospace; color: var(--text-muted); }
+    .diagram svg { width: 100%; height: auto; display: block; }
+    .diagram .box { fill: var(--node); stroke: var(--border); }
+    .diagram .box.hot { stroke: var(--accent); }
+    .diagram .label { font: 12px "IBM Plex Mono", monospace; fill: var(--text); }
+    .diagram .wire { fill: none; stroke: var(--wire); stroke-width: 1.5; }
+    .diagram .dot { fill: var(--dot); }
+
+    /* Sections */
+    section.block { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+    .section-head h2 { font-size: clamp(28px, 3.6vw, 38px); letter-spacing: -0.015em; }
+    .section-head .mono { color: var(--text-muted); font-size: 14px; }
+
+    .featured { display: grid; grid-template-columns: 1.15fr 1fr; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
+    .featured-media { background: var(--bg-alt); padding: 24px; display: flex; align-items: center; }
+    .featured-media img { border-radius: 8px; border: 1px solid var(--border); }
+    .featured-body { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
+
+    .project-title { display: flex; align-items: center; gap: 12px; }
+    .project-title img { width: 40px; height: 40px; border-radius: 10px; }
+    .project-title h3 { font-size: 22px; }
+    .tag { font: 12px "IBM Plex Mono", monospace; color: var(--text-muted); }
+    .project p { margin: 0; color: var(--text-muted); }
+    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: auto; padding-top: 6px; font-weight: 600; font-size: 15px; }
+    .links a { color: var(--accent); text-decoration: none; }
+    .links a:hover { text-decoration: underline; }
+
+    .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+
+    .more { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    .more a { display: block; text-decoration: none; padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; transition: border-color .15s, background .15s; }
+    .more a:hover { border-color: var(--accent); background: var(--surface); }
+    .more strong { display: block; font: 500 15px "IBM Plex Mono", monospace; }
+    .more span { font-size: 14px; color: var(--text-muted); }
+
+    .about { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .about p { margin: 0 0 16px; font-size: 17px; }
+    .principles { display: grid; gap: 12px; margin-top: 8px; }
+    .principle { display: flex; gap: 14px; align-items: baseline; }
+    .principle .mono { color: var(--accent); min-width: 72px; }
+    .principle span:last-child { color: var(--text-muted); }
+
+    .stack { display: grid; gap: 22px; align-content: start; padding-top: 72px; }
+    .stack h3 { font: 500 13px "IBM Plex Mono", monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font: 500 14px "IBM Plex Mono", monospace; }
+
+    .contact { text-align: center; padding-top: 96px; padding-bottom: 96px; }
+    .contact h2 { font-size: clamp(32px, 4.6vw, 48px); letter-spacing: -0.02em; margin-bottom: 14px; }
+    .contact p { color: var(--text-muted); margin: 0 0 28px; font-size: 18px; }
+    .contact .cta { justify-content: center; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0 40px; font-size: 14px; color: var(--text-muted); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+    @media (max-width: 900px) {
+      .hero, .about { grid-template-columns: 1fr; gap: 40px; }
+      .hero { padding-top: 24px; }
+      .featured { grid-template-columns: 1fr; }
+      .stack { padding-top: 0; }
+      .more { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links a.hide-sm { display: none; }
+      .projects, .more { grid-template-columns: 1fr; }
+      .featured-body, .card { padding: 22px; }
+      .featured-media { padding: 14px; }
+      section.block { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav>
+      <a class="logo" href="#">tung<span>thanh</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a class="hide-sm" href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <p class="kicker">solve() · build() · ship()</p>
+        <h1>Tung Thanh</h1>
+        <p class="role">Software Engineer · Solution Architect</p>
+        <p class="lede">I design and build scalable backend systems with Go, Node.js and TypeScript on AWS. In my spare time I make small tools that make everyday work easier.</p>
+        <div class="cta">
+          <a class="btn" href="#projects">See my work</a>
+          <a class="btn ghost" href="https://github.com/cs-tungthanh">GitHub</a>
+        </div>
+      </div>
+
+      <div class="diagram" aria-hidden="true">
+        <div class="diagram-bar"><i></i><i></i><i></i><span>architecture.drawio</span></div>
+        <svg viewBox="0 56 500 188" id="arch">
+          <path class="wire" id="w1" d="M92 150 H138"/>
+          <path class="wire" id="w2" d="M222 150 C248 150 248 90 273 90"/>
+          <path class="wire" id="w3" d="M222 150 C248 150 248 210 273 210"/>
+          <path class="wire" id="w4" d="M357 90 H408"/>
+          <path class="wire" id="w5" d="M357 210 H408"/>
+          <path class="wire" id="w6" d="M357 210 C382 210 382 90 408 90"/>
+
+          <rect class="box" x="8" y="132" width="84" height="36" rx="8"/>
+          <text class="label" x="50" y="154" text-anchor="middle">client</text>
+          <rect class="box hot" x="138" y="132" width="84" height="36" rx="8"/>
+          <text class="label" x="180" y="154" text-anchor="middle">gateway</text>
+          <rect class="box" x="273" y="72" width="84" height="36" rx="8"/>
+          <text class="label" x="315" y="94" text-anchor="middle">go-svc</text>
+          <rect class="box" x="273" y="192" width="84" height="36" rx="8"/>
+          <text class="label" x="315" y="214" text-anchor="middle">node-svc</text>
+          <rect class="box" x="408" y="72" width="84" height="36" rx="8"/>
+          <text class="label" x="450" y="94" text-anchor="middle">postgres</text>
+          <rect class="box" x="408" y="192" width="84" height="36" rx="8"/>
+          <text class="label" x="450" y="214" text-anchor="middle">redis</text>
+
+          <circle class="dot" r="3.5"><animateMotion dur="1.2s" repeatCount="indefinite"><mpath href="#w1"/></animateMotion></circle>
+          <circle class="dot" r="3.5"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#w2"/></animateMotion></circle>
+          <circle class="dot" r="3.5"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#w3"/></animateMotion></circle>
+          <circle class="dot" r="3.5"><animateMotion dur="1.1s" repeatCount="indefinite"><mpath href="#w4"/></animateMotion></circle>
+          <circle class="dot" r="3.5"><animateMotion dur="1.1s" repeatCount="indefinite"><mpath href="#w5"/></animateMotion></circle>
+          <circle class="dot" r="3.5"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#w6"/></animateMotion></circle>
+        </svg>
+      </div>
+    </div>
+
+    <section class="block" id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Side projects</h2>
+          <span class="mono">built in my spare time</span>
+        </div>
+
+        <article class="featured project">
+          <div class="featured-media">
+            <img src="assets/sayly-sentence.png" alt="Sayly popup over a web page, showing a sentence, a word's IPA and a Vietnamese translation" loading="lazy">
+          </div>
+          <div class="featured-body">
+            <div class="project-title">
+              <img src="assets/sayly.png" alt="">
+              <div><h3>Sayly</h3><span class="tag">Browser extension · TypeScript</span></div>
+            </div>
+            <p>Select English text on any web page to hear it spoken, see the IPA for every word and read a translation into 34 languages. Built for English learners, with a bundled 126,000-word dictionary so most lookups stay in the browser.</p>
+            <div class="links">
+              <a href="https://cs-tungthanh.github.io/cs-tungthanh/sayly/">Website & demo →</a>
+              <a href="https://github.com/cs-tungthanh/sayly">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="projects">
+          <article class="card project">
+            <div class="project-title">
+              <img src="assets/nook.png" alt="">
+              <div><h3>Nook</h3><span class="tag">macOS menu-bar app · Swift</span></div>
+            </div>
+            <p>A little corner of utilities in the menu bar: a power-off timer, break reminders with a full-screen overlay, and cleanup tools for shell history and bookmarks.</p>
+            <div class="links"><a href="https://github.com/cs-tungthanh/nook">Source →</a></div>
+          </article>
+          <article class="card project">
+            <div class="project-title">
+              <img src="assets/leetcode-vscode.svg" alt="">
+              <div><h3>LeetCode for VS Code</h3><span class="tag">VS Code extension · TypeScript</span></div>
+            </div>
+            <p>Search any problem, open today's daily challenge and get starter code in your language, all without leaving the editor. The preview uses VS Code's own theme colors.</p>
+            <div class="links"><a href="https://github.com/cs-tungthanh/leetcode-vscode">Source →</a></div>
+          </article>
+        </div>
+
+        <div class="more">
+          <a href="https://github.com/cs-tungthanh/memo.learning"><strong>memo.learning</strong><span>My notes on databases, networking, architecture and AWS.</span></a>
+          <a href="https://github.com/cs-tungthanh/microservice-app"><strong>microservice-app</strong><span>A web app backed by Go microservices behind a broker.</span></a>
+          <a href="https://github.com/cs-tungthanh/Bank_Golang"><strong>Bank_Golang</strong><span>A banking backend I built while learning Go.</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="about">
+      <div class="wrap about">
+        <div>
+          <div class="section-head"><h2>About</h2></div>
+          <p>I'm a software engineer and solution architect based in Vietnam. I spend my days on backend systems that need to stay fast and reliable as they grow, mostly in Go and Node.js on AWS.</p>
+          <p>I'm happiest turning a messy problem into a clean, dependable solution, and I keep learning to get better at it.</p>
+          <div class="principles">
+            <div class="principle"><span class="mono">solve</span><span>Understand the problem before reaching for a tool.</span></div>
+            <div class="principle"><span class="mono">build</span><span>Keep it simple enough that the next person can change it.</span></div>
+            <div class="principle"><span class="mono">ship</span><span>Get it in front of people, then make it better.</span></div>
+          </div>
+        </div>
+        <div class="stack">
+          <div><h3>Languages</h3><div class="chips"><span class="chip">Go</span><span class="chip">TypeScript</span><span class="chip">Node.js</span><span class="chip">Python</span></div></div>
+          <div><h3>Cloud &amp; infra</h3><div class="chips"><span class="chip">AWS</span><span class="chip">Docker</span></div></div>
+          <div><h3>Data</h3><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">Redis</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="contact">
+      <div class="wrap contact">
+        <h2>Let's talk</h2>
+        <p>Questions about a project, or something you'd like to build together? Send me an email.</p>
+        <div class="cta">
+          <a class="btn" href="mailto:cs.tungthanh@gmail.com">cs.tungthanh@gmail.com</a>
+          <a class="btn ghost" href="https://github.com/cs-tungthanh">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Tung Thanh</span>
+      <span class="mono">made in Vietnam 🇻🇳</span>
+    </div>
+  </footer>
+
+  <script>
+    // Hold the diagram still for people who prefer less motion
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const arch = document.getElementById('arch');
+      arch.pauseAnimations();
+      arch.querySelectorAll('.dot').forEach((dot) => dot.remove());
+    }
+  </script>
+</body>
+</html>
