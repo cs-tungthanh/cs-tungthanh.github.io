@@ -256,6 +256,46 @@
     }
     @keyframes elang-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
+    /* YouTube demo: a player with Sayly's subtitles (src/youtube/subtitles.ts), always dark like YouTube */
+    .yt-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; }
+    .yt-grid .section-head { margin-bottom: 0; }
+    .yt-points { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
+    .yt-points li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; color: var(--text-muted); font-size: 15px; }
+    .yt-points strong { color: var(--text); display: block; font-size: 16px; }
+    .yt-points .ico { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: var(--green-soft); color: var(--green); font: 700 14px "Noto Sans", sans-serif; }
+    .yt-player { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; box-shadow: var(--frame-shadow); container-type: inline-size; user-select: none; -webkit-user-select: none; }
+    .yt-scene {
+      position: absolute; inset: 0; border-radius: 14px; overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 34%, rgba(255, 212, 59, 0.28), transparent 26%),
+        radial-gradient(circle at 24% 70%, rgba(127, 214, 154, 0.22), transparent 34%),
+        linear-gradient(140deg, #22332a, #0e1512 65%);
+    }
+    .yt-subs {
+      position: absolute; left: 50%; bottom: 52px; transform: translateX(-50%); z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 0.2em;
+      width: max-content; max-width: 86%;
+      font: 500 clamp(12px, 3.1cqi, 19px)/1.35 Roboto, "Noto Sans", Arial, sans-serif; text-align: center;
+    }
+    .yt-line { padding: 0.1em 0.45em; border-radius: 4px; background: rgba(8, 8, 8, 0.75); color: #fff; }
+    .yt-line.past { opacity: 0.6; font-size: 0.85em; }
+    .yt-word { border-radius: 3px; cursor: default; transition: color .12s; }
+    .yt-word.now { color: #ffd54f; }
+    .yt-word.hovered { background: rgba(26, 115, 232, 0.55); color: #fff; }
+    .yt-controls {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 22px 12px 4px;
+      border-radius: 0 0 14px 14px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+    }
+    .yt-progress { height: 3px; background: rgba(255, 255, 255, 0.3); border-radius: 2px; }
+    .yt-progress span { display: block; height: 100%; width: 0; background: #ff0033; border-radius: 2px; }
+    .yt-bar { display: flex; align-items: center; gap: 8px; height: 38px; color: #fff; font: 13px Roboto, "Noto Sans", sans-serif; }
+    .yt-bar button { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; background: none; color: #fff; cursor: pointer; }
+    .yt-bar .yt-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .yt-cc { font-weight: 700; font-size: 12px; padding: 0 3px; border: 1.5px solid #fff; border-radius: 3px; box-shadow: 0 3px 0 -1px #ff0033; }
+    .yt-bar img { width: 22px; height: 22px; }
+    .yt-try { margin-top: 18px; }
+    .yt-try kbd { font: 600 12px "Noto Sans", sans-serif; padding: 0 5px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); }
+
     /* Sections */
     section.block { padding: 80px 0; }
     section.alt { background: var(--bg-alt); }
@@ -303,6 +343,7 @@
 
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 16px; }
+      .yt-grid { grid-template-columns: 1fr; gap: 36px; }
       .features { grid-template-columns: 1fr 1fr; }
       .gallery { grid-template-columns: 1fr; max-width: 640px; }
       .privacy { grid-template-columns: 1fr; }
@@ -313,6 +354,8 @@
       .page { padding: 20px 18px 26px; }
       .page p { font-size: 16px; }
       section.block { padding: 56px 0; }
+      .yt-subs { bottom: 44px; }
+      .yt-bar { height: 32px; }
     }
   </style>
 </head>
@@ -323,6 +366,7 @@
       <div class="nav-links">
         <a class="hide-sm" href="#how">How it works</a>
         <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="#youtube">YouTube</a>
         <a class="hide-sm" href="https://github.com/cs-tungthanh/sayly">GitHub</a>
         <a class="btn small" href="https://chromewebstore.google.com/detail/cjjpjacmmikigllekaeokclopngphbgo">Add to Chrome</a>
       </div>
@@ -336,7 +380,6 @@
         <p class="lede">Select English text on any web page. Sayly reads it aloud, shows how every word is pronounced and translates it into your language, right where you're reading.</p>
         <div class="cta">
           <a class="btn" href="https://chromewebstore.google.com/detail/cjjpjacmmikigllekaeokclopngphbgo">Add to Chrome — it's free</a>
-          <a class="btn ghost" href="#demo">Try it here</a>
         </div>
         <p class="note">Free on the Chrome Web Store. Works in Microsoft Edge too.</p>
       </div>
@@ -411,7 +454,7 @@
           <div class="feature">
             <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
             <h3>Translate</h3>
-            <p>Into 34 languages, Vietnamese by default. Select a single word to also see its meanings by part of speech.</p>
+            <p>Into 32 languages, Vietnamese by default. Sayly detects the language you selected, and a single word also shows its meanings by part of speech.</p>
           </div>
           <div class="feature">
             <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
@@ -447,7 +490,49 @@
       </div>
     </section>
 
-    <section class="block alt">
+    <section class="block alt" id="youtube">
+      <div class="wrap yt-grid">
+        <div class="section-head">
+          <h2>Learn English from YouTube</h2>
+          <p>Sayly turns any video with captions into a listening lesson, right inside YouTube's player.</p>
+          <ul class="yt-points">
+            <li><span class="ico">Aa</span><span><strong>Whole sentences on screen</strong>Sayly subtitles show complete sentences instead of short caption chunks, keep the last one to three in view, and light up each word as it's spoken.</span></li>
+            <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg></span><span><strong>Hover a word</strong>The video pauses and the word's popup opens with its IPA, sound and meaning. Move away and it plays on.</span></li>
+            <li><span class="ico">A D</span><span><strong>Hear it again</strong>Press A to replay the sentence you just heard, D to move to the next one, or set them to skip a few seconds instead.</span></li>
+            <li><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></span><span><strong>Settings in the player</strong>A Sayly button next to the gear sets subtitle size, sentences shown and shortcuts, in full screen too.</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="yt-player" id="ytPlayer">
+            <div class="yt-scene"></div>
+            <div class="yt-subs" id="ytSubs" aria-live="off"></div>
+            <div class="yt-controls">
+              <div class="yt-progress"><span id="ytProgress"></span></div>
+              <div class="yt-bar">
+                <button type="button" id="ytPlay" aria-label="Pause"></button>
+                <span id="ytTime">0:00 / 0:12</span>
+                <span class="yt-right"><span class="yt-cc">CC</span><img src="favicon.png" alt="Sayly"></span>
+              </div>
+            </div>
+          </div>
+          <div class="try yt-try">
+            Hover a word, or press
+            <button class="chip" type="button" data-yt="back"><kbd>A</kbd> replay</button>
+            <button class="chip" type="button" data-yt="next"><kbd>D</kbd> next</button>
+            <label>Sentences shown
+              <select id="ytLines">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
       <div class="wrap">
         <div class="section-head">
           <h2>A closer look</h2>
@@ -469,7 +554,7 @@
       </div>
     </section>
 
-    <section class="block" id="privacy">
+    <section class="block alt" id="privacy">
       <div class="wrap privacy">
         <div class="section-head">
           <h2>Your reading stays yours</h2>
@@ -480,6 +565,7 @@
           <li><strong>Missing words</strong><span>Only a word the built-in dictionary doesn't know is sent to the Free Dictionary API.</span></li>
           <li><strong>Translation</strong><span>Selected text goes to Google Translate, or MyMemory if Google fails. Set translation to Off to stop this.</span></li>
           <li><strong>Pronunciation audio</strong><span>Spoken text goes to Google's text-to-speech. If that fails, your browser's built-in voice is used.</span></li>
+          <li><strong>YouTube captions</strong><span>Read from YouTube itself and kept in your browser. A word you hover is looked up like a selection.</span></li>
         </ul>
       </div>
     </section>
@@ -507,7 +593,11 @@
     const IPA = {
       the: 'ðə', colonel: 'ˈkɝnəl', read: 'ˈrɛd', recipe: 'ˈrɛsəpi', twice: 'ˈtwaɪs', before: 'bɪˈfɔr',
       cooking: 'ˈkʊkɪŋ', quiche: 'ˈkiʃ', though: 'ˈðoʊ', weather: 'ˈwɛðɚ', was: 'ˈwʌz', rough: 'ˈrʌf',
-      he: 'ˈhi', walked: 'ˈwɔkt', through: 'ˈθru', thorough: 'ˈθɝoʊ', rain: 'ˈreɪn'
+      he: 'ˈhi', walked: 'ˈwɔkt', through: 'ˈθru', thorough: 'ˈθɝoʊ', rain: 'ˈreɪn',
+      // The YouTube demo's sentences
+      momentum: 'moʊˈmɛntəm', keeps: 'ˈkips', you: 'ˈju', moving: 'ˈmuvɪŋ', forward: 'ˈfɔrwɚd',
+      small: 'ˈsmɔl', habits: 'ˈhæbəts', build: 'ˈbɪld', it: 'ˈɪt', every: 'ˈɛvri', day: 'ˈdeɪ',
+      so: 'ˈsoʊ', start: 'ˈstɑrt', feel: 'ˈfil', ready: 'ˈrɛdi'
     };
     // Translations into Vietnamese; single words carry meanings by part of speech
     const TRANSLATIONS = {
@@ -528,7 +618,22 @@
       through: { text: 'xuyên qua', dictionary: [['preposition', ['qua', 'xuyên qua', 'suốt']]] },
       thorough: { text: 'kỹ lưỡng', dictionary: [['adjective', ['kỹ lưỡng', 'triệt để', 'hoàn toàn']]] },
       rain: { text: 'mưa', dictionary: [['noun', ['mưa', 'cơn mưa']], ['verb', ['mưa']]] },
-      the: { text: 'các' }, was: { text: 'đã từng' }, he: { text: 'anh ta', dictionary: [['pronoun', ['anh ấy', 'ông ấy', 'nó']]] }
+      the: { text: 'các' }, was: { text: 'đã từng' }, he: { text: 'anh ta', dictionary: [['pronoun', ['anh ấy', 'ông ấy', 'nó']]] },
+      momentum: { text: 'đà', dictionary: [['noun', ['đà', 'động lượng', 'xung lượng']]] },
+      keeps: { text: 'giữ', dictionary: [['verb', ['giữ', 'giữ cho', 'tiếp tục']]] },
+      you: { text: 'bạn', dictionary: [['pronoun', ['bạn', 'các bạn']]] },
+      moving: { text: 'di chuyển', dictionary: [['adjective', ['đang chuyển động', 'cảm động']], ['verb', ['di chuyển']]] },
+      forward: { text: 'phía trước', dictionary: [['adverb', ['về phía trước', 'tiến lên']], ['adjective', ['phía trước', 'tiến bộ']]] },
+      small: { text: 'nhỏ', dictionary: [['adjective', ['nhỏ', 'bé', 'ít']]] },
+      habits: { text: 'thói quen', dictionary: [['noun', ['thói quen', 'tập quán']]] },
+      build: { text: 'xây dựng', dictionary: [['verb', ['xây dựng', 'xây', 'tạo dựng']]] },
+      it: { text: 'nó', dictionary: [['pronoun', ['nó', 'điều đó']]] },
+      every: { text: 'mỗi', dictionary: [['adjective', ['mỗi', 'mọi']]] },
+      day: { text: 'ngày', dictionary: [['noun', ['ngày', 'ban ngày']]] },
+      so: { text: 'vì thế', dictionary: [['adverb', ['vì vậy', 'rất', 'như thế']], ['conjunction', ['vì thế', 'để']]] },
+      start: { text: 'bắt đầu', dictionary: [['verb', ['bắt đầu', 'khởi động']], ['noun', ['sự bắt đầu', 'khởi đầu']]] },
+      feel: { text: 'cảm thấy', dictionary: [['verb', ['cảm thấy', 'cảm nhận', 'sờ']]] },
+      ready: { text: 'sẵn sàng', dictionary: [['adjective', ['sẵn sàng', 'chuẩn bị xong']]] }
     };
 
     // Lucide icons the popup uses (src/ui/icons.ts)
@@ -539,7 +644,10 @@
       dictionary: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
       drag: '<circle cx="12" cy="9" r="1"/><circle cx="19" cy="9" r="1"/><circle cx="5" cy="9" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="19" cy="15" r="1"/><circle cx="5" cy="15" r="1"/>',
       copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
-      copied: '<path d="M20 6 9 17l-5-5"/>'
+      copied: '<path d="M20 6 9 17l-5-5"/>',
+      // The YouTube demo's play button
+      play: '<path d="M6 4.5v15l13-7.5z" fill="currentColor"/>',
+      pause: '<rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/>'
     };
     const WORD_PATTERN = /([A-Za-z]+(?:['’-][A-Za-z]+)*)/;
     const SINGLE_WORD_PATTERN = new RegExp(`^[^A-Za-z]*${WORD_PATTERN.source}[^A-Za-z]*$`);
@@ -678,8 +786,13 @@
       return { toggle: (wordEl) => (active === wordEl ? close() : open(wordEl)), close };
     }
 
+    // Where the popup is shown: the reading demo's page, or the YouTube demo's player
+    let popupHost = page;
+
     // Mirrors createPopup() in src/ui/popup-builder.ts
-    function showPopup(text, rect) {
+    function showPopup(text, rect, host = page) {
+      // A selection's popup taking over from a hovered caption word leaves the video paused, as in the extension
+      if (popupHost !== host) ytForgetHover();
       speechSynthesis?.cancel();
       clearTimeout(translationTimer);
       popup.replaceChildren();
@@ -742,17 +855,28 @@
         translationTimer = setTimeout(() => skeleton.replaceWith(translationDisplay(translation)), 350);
       }
 
+      popupHost = host;
+      if (popup.parentElement !== host) host.append(popup);
       popup.classList.add('open');
-      const box = page.getBoundingClientRect();
+      const box = host.getBoundingClientRect();
       const left = rect.left - box.left;
       popup.style.left = Math.max(12, Math.min(left, box.width - popup.offsetWidth - 12)) + 'px';
-      popup.style.top = (rect.bottom - box.top + 8) + 'px';
+      if (host === ytPlayer) {
+        // Above the caption word, growing upward as the translation arrives, so it stays clear of the controls
+        popup.style.top = 'auto';
+        popup.style.bottom = (box.bottom - rect.top + 8) + 'px';
+      } else {
+        popup.style.bottom = 'auto';
+        popup.style.top = (rect.bottom - box.top + 8) + 'px';
+      }
     }
 
     function hidePopup() {
+      const wasOpen = popup.classList.contains('open');
       popup.classList.remove('open');
       clearTimeout(translationTimer);
       speechSynthesis?.cancel();
+      if (wasOpen && popupHost === ytPlayer) ytPopupClosed();
     }
 
     function makeDraggable(handle) {
@@ -798,9 +922,223 @@
     });
 
     document.addEventListener('mousedown', (e) => {
-      if (popup.classList.contains('open') && !popup.contains(e.target) && !demoText.contains(e.target) && !e.target.closest('.try')) hidePopup();
+      if (popup.classList.contains('open') && !popup.contains(e.target) && !demoText.contains(e.target) && !e.target.closest('.try, .yt-bar, .yt-word')) hidePopup();
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hidePopup(); });
+
+    // YouTube demo: mirrors src/youtube/subtitles.ts (whole sentences, spoken word marked),
+    // caption-hover.ts (hover a word to pause and open its popup) and sentence-shortcuts.ts (A and D)
+    const ytPlayer = document.getElementById('ytPlayer');
+    const ytSubs = document.getElementById('ytSubs');
+    const ytProgress = document.getElementById('ytProgress');
+    const ytPlay = document.getElementById('ytPlay');
+    const ytTime = document.getElementById('ytTime');
+    const ytLines = document.getElementById('ytLines');
+    const HOVER_OPEN_MS = 300;
+    const HOVER_CLOSE_MS = 300;
+    const YT_DURATION = 12;
+    const SPOKEN_FOR = 3.2;
+    const YT_SENTENCES = [
+      { start: 0.4, text: 'Momentum keeps you moving forward.' },
+      { start: 4.4, text: 'Small habits build it every day.' },
+      { start: 8.2, text: 'So start before you feel ready.' }
+    ].map((sentence) => {
+      // Words spread evenly over the sentence, as Sayly estimates for captions timed by line
+      const words = sentence.text.split(' ');
+      const step = SPOKEN_FOR / words.length;
+      return { ...sentence, end: sentence.start + SPOKEN_FOR, words: words.map((text, i) => ({ text, start: sentence.start + i * step })) };
+    });
+
+    let ytTimeNow = 0;
+    let ytPlaying = false;
+    let ytPausedByHover = false;
+    let ytLastFrame = 0;
+    let ytShownKey = '';
+    let ytShownWords = [];
+    let ytSpoken = null;
+    let ytHovered = null;
+    let ytOpenTimer = null;
+    let ytCloseTimer = null;
+    let ytPendingWord = null;
+    let ytLastBack = 0;
+
+    const formatTime = (s) => `0:${String(Math.floor(s)).padStart(2, '0')}`;
+    const startedIndex = (list, t) => list.reduce((found, item, i) => (item.start <= t ? i : found), -1);
+
+    function ytRender() {
+      const index = startedIndex(YT_SENTENCES, ytTimeNow);
+      const showing = index >= 0 && ytTimeNow <= YT_SENTENCES[index].end + 5;
+      const first = Math.max(0, index - Number(ytLines.value) + 1);
+      const key = showing ? `${first}:${index}` : '';
+      if (key !== ytShownKey) {
+        ytShownKey = key;
+        ytShownWords = [];
+        ytSpoken = null;
+        ytSubs.replaceChildren();
+        if (showing) {
+          YT_SENTENCES.slice(first, index + 1).forEach((sentence, i, shown) => {
+            const past = i < shown.length - 1;
+            const line = el('div', past ? 'yt-line past' : 'yt-line');
+            sentence.words.forEach((word, j) => {
+              if (j > 0) line.append(' ');
+              const span = el('span', 'yt-word', word.text);
+              line.append(span);
+              if (!past) ytShownWords.push({ el: span, start: word.start });
+            });
+            ytSubs.append(line);
+          });
+        }
+      }
+      // Mark the word being spoken, until the sentence ends
+      const w = startedIndex(ytShownWords, ytTimeNow);
+      const sentenceEnd = index >= 0 ? YT_SENTENCES[index].end : 0;
+      const spoken = w >= 0 && ytTimeNow < sentenceEnd ? ytShownWords[w].el : null;
+      if (spoken !== ytSpoken) {
+        ytSpoken?.classList.remove('now');
+        spoken?.classList.add('now');
+        ytSpoken = spoken;
+      }
+      ytProgress.style.width = `${(ytTimeNow / YT_DURATION) * 100}%`;
+      ytTime.textContent = `${formatTime(ytTimeNow)} / ${formatTime(YT_DURATION)}`;
+    }
+
+    function ytFrame(now) {
+      if (ytPlaying) {
+        ytTimeNow += Math.min(now - ytLastFrame, 100) / 1000;
+        if (ytTimeNow >= YT_DURATION) ytTimeNow = 0;
+      }
+      ytLastFrame = now;
+      ytRender();
+      requestAnimationFrame(ytFrame);
+    }
+
+    function ytSetPlaying(playing) {
+      ytPlaying = playing;
+      setIcon(ytPlay, playing ? 'pause' : 'play', 20, playing ? 'Pause' : 'Play');
+    }
+
+    function ytForgetHover() {
+      ytPausedByHover = false;
+      ytHovered?.classList.remove('hovered');
+      ytHovered = null;
+    }
+
+    // The popup went away (moved off, Esc, closed): play on if hovering paused the video
+    function ytPopupClosed() {
+      const resume = ytPausedByHover;
+      ytForgetHover();
+      clearTimeout(ytCloseTimer);
+      if (resume) ytSetPlaying(true);
+    }
+
+    function ytOpenWord(span) {
+      if (!span.isConnected) return;
+      if (ytPlaying) {
+        ytSetPlaying(false);
+        ytPausedByHover = true;
+      }
+      const word = span.textContent.match(WORD_PATTERN)?.[1];
+      if (!word) return;
+      const pausedByHover = ytPausedByHover;
+      showPopup(word, span.getBoundingClientRect(), ytPlayer);
+      ytPausedByHover = pausedByHover;
+      ytHovered?.classList.remove('hovered');
+      span.classList.add('hovered');
+      ytHovered = span;
+    }
+
+    function ytScheduleClose() {
+      if (!popup.classList.contains('open') || popupHost !== ytPlayer || ytCloseTimer) return;
+      ytCloseTimer = setTimeout(() => { ytCloseTimer = null; hidePopup(); }, HOVER_CLOSE_MS);
+    }
+
+    function ytCancelOpen() {
+      clearTimeout(ytOpenTimer);
+      ytOpenTimer = null;
+      ytPendingWord = null;
+    }
+
+    document.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch') return;
+      const ytPopupOpen = popup.classList.contains('open') && popupHost === ytPlayer;
+      if (ytPopupOpen && popup.contains(e.target)) {
+        ytCancelOpen();
+        clearTimeout(ytCloseTimer);
+        ytCloseTimer = null;
+        return;
+      }
+      const span = e.target.closest?.('.yt-word');
+      if (!span) {
+        ytCancelOpen();
+        ytScheduleClose();
+        return;
+      }
+      clearTimeout(ytCloseTimer);
+      ytCloseTimer = null;
+      if (span === ytHovered || span === ytPendingWord) return;
+      // Leave a popup opened by selecting text alone
+      if (popup.classList.contains('open') && popupHost !== ytPlayer) return;
+      ytCancelOpen();
+      ytPendingWord = span;
+      ytOpenTimer = setTimeout(() => { ytPendingWord = null; ytOpenWord(span); }, HOVER_OPEN_MS);
+    });
+
+    // Touch has no hover: a tap on a word opens it
+    ytSubs.addEventListener('click', (e) => {
+      const span = e.target.closest('.yt-word');
+      if (span) ytOpenWord(span);
+    });
+
+    ytPlay.addEventListener('click', () => {
+      // Playing by hand closes the word's popup without it also toggling playback
+      ytPausedByHover = false;
+      if (popupHost === ytPlayer) hidePopup();
+      ytSetPlaying(!ytPlaying);
+    });
+
+    function ytJump(direction) {
+      if (popupHost === ytPlayer) hidePopup();
+      let index = startedIndex(YT_SENTENCES, ytTimeNow + 0.05);
+      if (direction > 0) {
+        index = index + 1 < YT_SENTENCES.length ? index + 1 : 0;
+      } else {
+        // Pressed again within a second: the sentence before
+        if (performance.now() - ytLastBack < 1000 && index > 0) index--;
+        ytLastBack = performance.now();
+        if (index < 0) index = 0;
+      }
+      ytTimeNow = YT_SENTENCES[index].start;
+      ytSetPlaying(true);
+    }
+
+    document.querySelectorAll('[data-yt]').forEach((btn) => {
+      btn.addEventListener('click', () => ytJump(btn.dataset.yt === 'next' ? 1 : -1));
+    });
+
+    // A and D work while the player is on screen, as on a YouTube watch page
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.('input, select, textarea')) return;
+      const key = e.key.toLowerCase();
+      if (key !== 'a' && key !== 'd') return;
+      const box = ytPlayer.getBoundingClientRect();
+      if (box.bottom < 0 || box.top > innerHeight) return;
+      e.preventDefault();
+      ytJump(key === 'd' ? 1 : -1);
+    });
+
+    ytLines.addEventListener('change', () => { ytShownKey = '-'; });
+
+    // Plays once scrolled into view, unless motion is reduced
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    ytSetPlaying(false);
+    new IntersectionObserver((entries, observer) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        if (!reduceMotion) ytSetPlaying(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 }).observe(ytPlayer);
+    requestAnimationFrame((now) => { ytLastFrame = now; ytFrame(now); });
+
     speechSynthesis?.getVoices();
   </script>
 </body>
