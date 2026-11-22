@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nook – Utilities under your Mac's notch</title>
+  <meta name="description" content="Nook drops down from your Mac's notch with a Pomodoro timer, a shutdown timer, background music, screen recording, Bluetooth devices and system stats. Free for Apple silicon Macs.">
+  <meta property="og:title" content="Nook – Utilities under your Mac's notch">
+  <meta property="og:description" content="Pomodoro, power-off timer, music, screen recording, Bluetooth and system stats, one click from the menu bar.">
+  <meta property="og:image" content="screens/utilities.png">
+  <link rel="icon" type="image/png" href="nook.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Noto+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f5f2;
+      --bg-alt: #efebe5;
+      --surface: #ffffff;
+      --text: #1d1a17;
+      --text-muted: #625b54;
+      --border: #e2dcd3;
+      --accent: #d9502a;
+      --accent-soft: #fbe3d8;
+      --on-accent: #ffffff;
+      --code-bg: #1d1a17;
+      --code-text: #f4efe9;
+      --frame-shadow: 0 30px 60px rgba(60, 40, 20, 0.18);
+      --wall: linear-gradient(135deg, #f6b38a 0%, #e97b6a 38%, #8a6fd1 72%, #4f7fe0 100%);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0f0f11;
+        --bg-alt: #16161a;
+        --surface: #1c1c21;
+        --text: #ececef;
+        --text-muted: #a3a3ad;
+        --border: #2a2a31;
+        --accent: #ff8a5e;
+        --accent-soft: #3a2118;
+        --on-accent: #1a0d07;
+        --code-bg: #050506;
+        --code-text: #ececef;
+        --frame-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        --wall: linear-gradient(135deg, #5a3a7a 0%, #7b3f52 40%, #2d3f7a 75%, #1b2a55 100%);
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0f0f11;
+      --bg-alt: #16161a;
+      --surface: #1c1c21;
+      --text: #ececef;
+      --text-muted: #a3a3ad;
+      --border: #2a2a31;
+      --accent: #ff8a5e;
+      --accent-soft: #3a2118;
+      --on-accent: #1a0d07;
+      --code-bg: #050506;
+      --code-text: #ececef;
+      --frame-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      --wall: linear-gradient(135deg, #5a3a7a 0%, #7b3f52 40%, #2d3f7a 75%, #1b2a55 100%);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 "Noto Sans", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: "Bricolage Grotesque", "Noto Sans", sans-serif; line-height: 1.1; margin: 0; }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+    code, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 600 20px "Noto Sans", sans-serif; }
+    .brand img { width: 34px; height: 34px; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; gap: 12px; }
+    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 15px; }
+    .nav-links a:not(.btn) { text-decoration: none; color: var(--text-muted); }
+    .nav-links a:not(.btn):hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 999px; border: 0;
+      font: 600 16px "Noto Sans", sans-serif; text-decoration: none; cursor: pointer;
+      background: var(--accent); color: var(--on-accent);
+      transition: filter .15s, transform .15s;
+    }
+    .btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+    .btn.ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--border); }
+    .btn.ghost:hover { background: var(--bg-alt); filter: none; }
+    .btn.small { padding: 7px 16px; font-size: 14px; }
+
+    /* Install command with a copy button */
+    .install { display: flex; align-items: center; gap: 4px; background: var(--code-bg); color: var(--code-text); border-radius: 14px; padding: 6px 6px 6px 18px; max-width: 100%; }
+    .install code { flex: 1; min-width: 0; font-size: 14.5px; white-space: nowrap; overflow-x: auto; padding: 8px 0; scrollbar-width: none; }
+    .install code::-webkit-scrollbar { display: none; }
+    .install code::before { content: "$ "; opacity: .5; }
+    .copy { flex: none; border: 0; border-radius: 10px; padding: 8px 14px; cursor: pointer; font: 600 13px "Noto Sans", sans-serif; background: rgba(255,255,255,.12); color: inherit; }
+    .copy:hover { background: rgba(255,255,255,.2); }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; padding-top: 40px; padding-bottom: 88px; }
+    /* Let grid columns shrink below their content, so the install command scrolls instead of widening the page */
+    .hero > *, .split > *, .privacy > * { min-width: 0; }
+    .eyebrow { display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(40px, 5.6vw, 62px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 18px; }
+    .hero p.lede { font-size: 19px; color: var(--text-muted); margin: 0 0 28px; max-width: 30em; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .note { font-size: 14px; color: var(--text-muted); margin-top: 14px; }
+    .note a { color: var(--text-muted); }
+
+    /* A Mac screen with Nook dropping from the notch */
+    .screen { position: relative; border-radius: 18px; background: var(--wall); box-shadow: var(--frame-shadow); overflow: hidden; aspect-ratio: 16 / 13; border: 1px solid var(--border); }
+    .menubar { position: absolute; inset: 0 0 auto 0; height: 22px; background: rgba(255,255,255,.22); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,.65); }
+    .menubar span:last-child { display: flex; gap: 10px; align-items: center; }
+    .menubar img { width: 13px; height: 13px; filter: grayscale(1) brightness(0); opacity: .7; }
+    .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 19%; height: 22px; background: #000; border-radius: 0 0 9px 9px; }
+    .island { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 88%; animation: drop .9s cubic-bezier(.2,.9,.25,1.05) .25s both; transform-origin: top center; }
+    @keyframes drop { from { transform: translateX(-50%) scaleY(.06) scaleX(.22); opacity: .6; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .island { animation: none; } }
+
+    /* Sections */
+    section.block { padding: 84px 0; }
+    section.alt { background: var(--bg-alt); }
+    .section-head { max-width: 640px; margin-bottom: 40px; }
+    .section-head h2 { font-size: clamp(30px, 4vw, 42px); font-weight: 800; letter-spacing: -0.015em; margin-bottom: 12px; }
+    .section-head p { color: var(--text-muted); margin: 0; font-size: 17px; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: step; }
+    .step { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+      background: var(--accent); color: var(--on-accent); font: 800 17px "Bricolage Grotesque", sans-serif; margin-bottom: 14px;
+    }
+    .step h3 { font-size: 21px; margin-bottom: 6px; }
+    .step p { margin: 0; color: var(--text-muted); }
+    .step kbd { font: 600 12px "Noto Sans", sans-serif; padding: 0 6px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; background: var(--bg); }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .feature { background: var(--bg); padding: 26px 24px; }
+    .feature .ico { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; margin-bottom: 14px; color: #fff; }
+    .feature h3 { font-size: 19px; margin-bottom: 6px; }
+    .feature p { margin: 0; color: var(--text-muted); font-size: 15px; }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .split .shot { filter: drop-shadow(0 18px 30px rgba(0,0,0,.18)); }
+    .checks { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+    .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; color: var(--text-muted); }
+    .checks li::before { content: ""; width: 20px; height: 20px; margin-top: 2px; border-radius: 50%; background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9502a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+    .checks li strong { color: var(--text); }
+
+    .privacy { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .privacy ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .privacy li { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 15px; }
+    .privacy li strong { display: block; }
+    .privacy li span { color: var(--text-muted); }
+
+    .final { text-align: center; padding-top: 88px; padding-bottom: 88px; }
+    .final img { width: 96px; height: 96px; margin: 0 auto; }
+    .final h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; margin: 16px 0 12px; }
+    .final p { color: var(--text-muted); margin: 0 auto 28px; font-size: 17px; max-width: 34em; }
+    .final .install { max-width: 520px; margin: 0 auto 18px; text-align: left; }
+    .final .cta { justify-content: center; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0 40px; font-size: 14px; color: var(--text-muted); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+    footer a { color: var(--text-muted); }
+
+    @media (max-width: 900px) {
+      .hero, .split, .privacy { grid-template-columns: 1fr; gap: 36px; }
+      .hero { padding-top: 16px; }
+      .features { grid-template-columns: 1fr 1fr; }
+      .split .shot { order: -1; }
+    }
+    @media (max-width: 560px) {
+      .nav-links a.hide-sm { display: none; }
+      .steps, .features { grid-template-columns: 1fr; }
+      section.block { padding: 56px 0; }
+      .install code { font-size: 13px; }
+      .menubar .hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <nav>
+      <a class="brand" href="#"><img src="nook.png" alt="">Nook</a>
+      <div class="nav-links">
+        <a class="hide-sm" href="#how">How it works</a>
+        <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="https://github.com/cs-tungthanh/nook">GitHub</a>
+        <a class="btn small" href="#install">Install</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <span class="eyebrow">Free · macOS menu bar app</span>
+        <h1>Your Mac's notch, put to work</h1>
+        <p class="lede">Click Nook in the menu bar and it drops down from the notch with a Pomodoro timer, a shutdown timer, background music, screen recording, your Bluetooth devices and your Mac's vitals. Press Esc and it's gone.</p>
+        <div class="install" id="install">
+          <code>brew install --cask cs-tungthanh/tap/nook</code>
+          <button class="copy" type="button" data-copy="brew install --cask cs-tungthanh/tap/nook">Copy</button>
+        </div>
+        <p class="note">For Apple silicon Macs with macOS 13 or later. Installs with <a href="https://brew.sh">Homebrew</a> and updates itself.</p>
+      </div>
+
+      <div class="screen" role="img" aria-label="Nook's island hanging from the notch of a Mac screen, showing the Pomodoro, Power Off, Music, Screen Recording and Bluetooth tiles">
+        <div class="menubar">
+          <span>&#63743;&nbsp;&nbsp;Finder</span>
+          <span><span class="hide-sm">Sat 21 Nov</span><img src="nook.png" alt=""><span>9:41</span></span>
+        </div>
+        <div class="notch"></div>
+        <img class="island" src="screens/utilities.png" alt="">
+      </div>
+    </div>
+
+    <section class="block alt" id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Always one click away</h2>
+          <p>Nook stays out of the way until you need it, then folds back into the notch.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>Install it once</h3>
+            <p>Run one Homebrew command. Nook adds a small icon to your menu bar and nothing to your Dock.</p>
+          </div>
+          <div class="step">
+            <h3>Click the icon</h3>
+            <p>The island drops from the notch, like the Dynamic Island, with every tool on one page.</p>
+          </div>
+          <div class="step">
+            <h3>Get back to work</h3>
+            <p>Click anywhere else or press <kbd>Esc</kbd>. Timers and music keep running in the background.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Small tools you reach for every day</h2>
+          <p>Six utilities that used to mean six apps, sharing one tidy panel.</p>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <div class="ico" style="background:#e8553a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg></div>
+            <h3>Pomodoro</h3>
+            <p>Focus sprints with a live countdown ring, then a break as a notification or a full-screen overlay. Pauses while your Mac sleeps.</p>
+          </div>
+          <div class="feature">
+            <div class="ico" style="background:#f0a12b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg></div>
+            <h3>Power Off</h3>
+            <p>Drag along a ruler to shut your Mac down in 5 minutes to 2 hours. A countdown sits in the island; cancel in one click.</p>
+          </div>
+          <div class="feature">
+            <div class="ico" style="background:#2f7cf6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+            <h3>Music</h3>
+            <p>Study, sleep, focus and jazz live streams from YouTube, playing in the background. Search YouTube or play your own playlists.</p>
+          </div>
+          <div class="feature">
+            <div class="ico" style="background:#e5484d"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg></div>
+            <h3>Screen Recording</h3>
+            <p>One screen, all screens or an area, with system audio and your mic. Pause, resume and save as a movie file.</p>
+          </div>
+          <div class="feature">
+            <div class="ico" style="background:#3b82f6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg></div>
+            <h3>Bluetooth</h3>
+            <p>Your paired devices with battery levels, AirPods left, right and case included. Connect or disconnect in one click.</p>
+          </div>
+          <div class="feature">
+            <div class="ico" style="background:#34a865"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></div>
+            <h3>System</h3>
+            <p>CPU, GPU, memory, battery, network, disk space and power draw. Measured only while the page is open.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block alt">
+      <div class="wrap split">
+        <div>
+          <div class="section-head" style="margin-bottom:0">
+            <h2>Your Mac's vitals at a glance</h2>
+            <p>Press System in the island's header to see how hard your Mac is working, then switch back to your tools.</p>
+          </div>
+          <ul class="checks">
+            <li><span><strong>CPU, GPU and memory</strong> with meters that turn orange above 85%.</span></li>
+            <li><span><strong>Battery and power:</strong> charge, charging state, the watts your Mac draws and the adapter's rating.</span></li>
+            <li><span><strong>Network and disk:</strong> live download and upload speed, and the space you have left.</span></li>
+          </ul>
+        </div>
+        <img class="shot" src="screens/system.png" alt="Nook's System page with CPU, GPU, Memory, Battery, Network, Available disk space and Power tiles" loading="lazy">
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="wrap split">
+        <img class="shot" src="screens/about.png" alt="Nook's About page showing version 1.1.0, installed with Homebrew, and that Nook is up to date" loading="lazy">
+        <div>
+          <div class="section-head" style="margin-bottom:0">
+            <h2>Always up to date</h2>
+            <p>Nook checks for new versions on its own. When one is out, an Update button appears in the island.</p>
+          </div>
+          <ul class="checks">
+            <li><span><strong>One click:</strong> Update &amp; Relaunch installs the new version and reopens Nook.</span></li>
+            <li><span><strong>Verified:</strong> every download is checked against the checksum published on GitHub.</span></li>
+            <li><span><strong>Homebrew-aware:</strong> if you installed with Homebrew, Nook updates through it, so <code>brew</code> stays in sync.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block alt" id="privacy">
+      <div class="wrap privacy">
+        <div class="section-head">
+          <h2>Light, local and open</h2>
+          <p>Nook is a single native app. It doesn't need an account, and it doesn't send anything about you anywhere.</p>
+        </div>
+        <ul>
+          <li><strong>No account, no tracking</strong><span>There are no analytics. Nook only goes online for music and YouTube, and to check GitHub for updates.</span></li>
+          <li><strong>Your YouTube stays read-only</strong><span>Connecting your account is optional. Nook only reads your playlists, and the sign-in is kept in your Keychain.</span></li>
+          <li><strong>Easy on your Mac</strong><span>System stats are measured only while you're looking at them, and the island's content is unloaded while it's closed.</span></li>
+          <li><strong>Open source</strong><span>Every line is on <a href="https://github.com/cs-tungthanh/nook">GitHub</a>, so you can read it or build it yourself.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wrap final">
+      <img src="nook.png" alt="Nook icon">
+      <h2>Make room for Nook</h2>
+      <p>Free for Apple silicon Macs with macOS 13 or later. One command installs it; after that it keeps itself up to date.</p>
+      <div class="install">
+        <code>brew install --cask cs-tungthanh/tap/nook</code>
+        <button class="copy" type="button" data-copy="brew install --cask cs-tungthanh/tap/nook">Copy</button>
+      </div>
+      <div class="cta">
+        <a class="btn ghost" href="https://github.com/cs-tungthanh/nook">View on GitHub</a>
+        <a class="btn ghost" href="https://github.com/cs-tungthanh/nook/releases">Release notes</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Nook · Made by <a href="/">Tung Thanh</a></span>
+      <span><a href="https://github.com/cs-tungthanh/nook/issues">Feedback</a> · <a href="https://github.com/cs-tungthanh/nook/releases/latest">Latest release</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Copy the install command; fall back to selecting it if the clipboard isn't available
+    document.querySelectorAll('.copy').forEach(button => {
+      button.addEventListener('click', async () => {
+        const text = button.dataset.copy;
+        try {
+          await navigator.clipboard.writeText(text);
+          button.textContent = 'Copied';
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(button.previousElementSibling);
+          const selection = getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          button.textContent = 'Press ⌘C';
+        }
+        setTimeout(() => { button.textContent = 'Copy'; }, 1800);
+      });
+    });
+  </script>
+</body>
+</html>
