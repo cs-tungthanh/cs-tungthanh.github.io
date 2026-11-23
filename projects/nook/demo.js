@@ -80,10 +80,10 @@
     notelist: '<path d="M3 6h10M3 10h10M3 14h6"/><path d="M17 17V5l4-1"/><circle cx="15" cy="17" r="2" fill="currentColor"/>',
     spk0: '<path d="M4 9.5h4l5-4v13l-5-4H4z" fill="currentColor"/>',
     spk3: '<path d="M4 9.5h4l5-4v13l-5-4H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/>',
-    cup: '<path d="M4 9h13v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z" fill="currentColor"/><path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H16"/>',
-    moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="currentColor"/>',
+    cup: '<path d="M4.5 7.5h12v4a6 6 0 0 1-6 6 6 6 0 0 1-6-6z" fill="currentColor" stroke="none"/><path d="M16.5 9h1.3a2.6 2.6 0 0 1 0 5.2h-1.6" fill="none" stroke-width="1.8"/><path d="M2.5 20h16" stroke-width="2.2"/>',
+    moon: '<path d="M13.5 13.8A7 7 0 1 1 6.2 5a5.6 5.6 0 0 0 7.3 8.8z" fill="currentColor" stroke="none" transform="translate(1 4)"/><path d="M14 3h3.2L14 6.4h3.2M18.6 8.2h2.6l-2.6 2.8h2.6" fill="none" stroke-width="1.5"/>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="currentColor"/>',
-    flame: '<path d="M12 21c-3.6 0-6-2.4-6-5.6 0-3.4 2.4-5 3.6-8.4.4 2 1.6 3 2.6 3.4.2-2.4 1.2-4.8 3.2-6.4-.4 3.2 2.6 5.2 2.6 9.2 0 4.2-2.6 7.8-6 7.8z" fill="currentColor" stroke="none"/>',
+    flame: '<path fill-rule="evenodd" fill="currentColor" stroke="none" d="M12 22c-4.4 0-7.5-3-7.5-7.2 0-3.2 1.7-5.6 3.6-7.6.5 1.6 1.4 2.7 2.6 3.2C10.6 7 12 4.2 14.6 2c-.2 3.4 1.4 5.2 2.8 7.2 1.3 1.8 2.1 3.4 2.1 5.6C19.5 19 16.4 22 12 22zM12 20.2c-1.9 0-3.2-1.3-3.2-3.1 0-1.7 1.1-2.7 2.1-4 .3.9.8 1.4 1.4 1.6.2-1.2.8-2.3 1.7-3.1 0 1.6 1.2 2.6 1.2 4.6 0 2.4-1.4 4-3.2 4z"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
     minus: '<path d="M5 12h14"/>',
     okc: '<circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="m8 12.5 3 3 5-6" stroke="#000"/>',
@@ -322,11 +322,11 @@
       const prog = p.total ? p.left / p.total : 0, C = 2 * Math.PI * 26;
       body = `<div class="body">
           <div class="d-ring"><svg width="58" height="58" viewBox="0 0 58 58"><circle cx="29" cy="29" r="26" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="5"/><circle cx="29" cy="29" r="26" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - prog)}"/></svg><div class="glyph">${ic(brk ? 'cup' : 'flame', 20)}</div></div>
-          <div><div class="lbl">${brk ? 'BREAK' : 'FOCUS'}</div><div class="clock">${clock(p.left)}</div><div class="sub">${brk ? 'Look away, stretch, breathe' : `then a ${brkLen()}m break`}</div></div>
+          <div><div class="lbl">${brk ? 'BREAK' : 'FOCUS'}</div><div class="clock">${clock(p.left)}</div><div class="sub">${brk ? 'Look away, stretch, breathe' : `then a ${brkLen()} min break`}</div></div>
         </div>
         <div class="d-pills">
           <button type="button" class="d-pill" data-a="pomo-snooze">${ic('moon', 12)} Snooze 5m</button>
-          <button type="button" class="d-pill strong" style="color:${colors[0]}" data-a="${brk ? 'pomo-focus' : 'pomo-break'}">${brk ? ic('bolt', 12) + ' Back to focus' : ic('cup', 13) + ' Break now'}</button>
+          <button type="button" class="d-pill strong" style="color:${colors[0]}" data-a="${brk ? 'pomo-focus' : 'pomo-break'}">${brk ? ic('bolt', 12) + ' Back to focus' : ic('cup', 14) + ' Break now'}</button>
         </div>`;
     }
     const warn = p.style === 'notification' && S.perms.notif !== 'granted'

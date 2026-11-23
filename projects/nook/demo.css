@@ -109,11 +109,12 @@
 .d-pomo { border-radius: 14px; padding: 14px; color: #fff; display: grid; gap: 12px; }
 .d-card-head { display: flex; align-items: center; gap: 6px; min-height: 20px; }
 .d-card-head b { font: 700 14px/1 var(--round); }
+.d-card-head > span:first-child { font-size: 15px; line-height: 1; }
 .d-card-head .sp { flex: 1; }
 .d-x { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.2); display: grid; place-items: center; }
 .d-pomo .body { display: flex; align-items: center; gap: 14px; }
 .d-ring { position: relative; width: 58px; height: 58px; flex: none; }
-.d-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.d-ring > svg { position: absolute; inset: 0; transform: rotate(-90deg); }
 .d-ring .glyph { position: absolute; inset: 0; display: grid; place-items: center; }
 .d-pomo .lbl { font: 800 10px/1.2 var(--round); letter-spacing: 1.5px; opacity: .85; }
 .d-pomo .clock { font: 700 30px/1.1 var(--round); font-variant-numeric: tabular-nums; }
