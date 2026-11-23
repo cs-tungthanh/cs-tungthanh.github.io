@@ -116,12 +116,12 @@
     .note a { color: var(--text-muted); }
 
     /* A Mac screen with Nook dropping from the notch */
-    .screen { position: relative; border-radius: 18px; background: var(--wall); box-shadow: var(--frame-shadow); overflow: hidden; aspect-ratio: 16 / 13; border: 1px solid var(--border); }
+    .screen { position: relative; border-radius: 18px; background: var(--wall); box-shadow: var(--frame-shadow); overflow: hidden; aspect-ratio: 20 / 19; border: 1px solid var(--border); }
     .menubar { position: absolute; inset: 0 0 auto 0; height: 22px; background: rgba(255,255,255,.22); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,.65); }
     .menubar span:last-child { display: flex; gap: 10px; align-items: center; }
     .menubar img { width: 13px; height: 13px; filter: grayscale(1) brightness(0); opacity: .7; }
     .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 19%; height: 22px; background: #000; border-radius: 0 0 9px 9px; }
-    .island { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 88%; animation: drop .9s cubic-bezier(.2,.9,.25,1.05) .25s both; transform-origin: top center; }
+    .island { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 82%; animation: drop .9s cubic-bezier(.2,.9,.25,1.05) .25s both; transform-origin: top center; }
     @keyframes drop { from { transform: translateX(-50%) scaleY(.06) scaleX(.22); opacity: .6; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { .island { animation: none; } }
 
@@ -214,7 +214,7 @@
         <p class="note">For Apple silicon Macs with macOS 13 or later. Installs with <a href="https://brew.sh">Homebrew</a> and updates itself.</p>
       </div>
 
-      <div class="screen" role="img" aria-label="Nook's island hanging from the notch of a Mac screen, showing the Pomodoro, Power Off, Music, Screen Recording and Bluetooth tiles">
+      <div class="screen" role="img" aria-label="Nook's island hanging from the notch of a Mac screen, showing the Pomodoro and Music cards and the Power Off, Screen Recording and Bluetooth tiles">
         <div class="menubar">
           <span>&#63743;&nbsp;&nbsp;Finder</span>
           <span><span class="hide-sm">Sat 21 Nov</span><img src="nook.png" alt=""><span>9:41</span></span>
@@ -257,7 +257,7 @@
           <div class="feature">
             <div class="ico" style="background:#e8553a"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M10 2h4"/></svg></div>
             <h3>Pomodoro</h3>
-            <p>Focus sprints with a live countdown ring, then a break as a notification or a full-screen overlay. Pauses while your Mac sleeps.</p>
+            <p>Focus for 20, 25, 50 minutes or your own length, with a live countdown ring, then a break as a notification or a full-screen overlay. Pauses while your Mac sleeps.</p>
           </div>
           <div class="feature">
             <div class="ico" style="background:#f0a12b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></svg></div>
@@ -267,7 +267,7 @@
           <div class="feature">
             <div class="ico" style="background:#2f7cf6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
             <h3>Music</h3>
-            <p>Study, sleep, focus and jazz live streams from YouTube, playing in the background. Search YouTube or play your own playlists.</p>
+            <p>Study, sleep, focus and jazz streams from YouTube on a card with the video's artwork. Search, play your playlists, and let it pick back up once your Mac goes quiet.</p>
           </div>
           <div class="feature">
             <div class="ico" style="background:#e5484d"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg></div>
@@ -307,7 +307,7 @@
 
     <section class="block">
       <div class="wrap split">
-        <img class="shot" src="screens/about.png" alt="Nook's About page showing version 1.1.0, installed with Homebrew, and that Nook is up to date" loading="lazy">
+        <img class="shot" src="screens/about.png" alt="Nook's About page showing version 1.5.0, a Check for Updates button, and links to GitHub, the release notes and Permissions" loading="lazy">
         <div>
           <div class="section-head" style="margin-bottom:0">
             <h2>Always up to date</h2>
@@ -331,6 +331,7 @@
         <ul>
           <li><strong>No account, no tracking</strong><span>There are no analytics. Nook only goes online for music and YouTube, and to check GitHub for updates.</span></li>
           <li><strong>Your YouTube stays read-only</strong><span>Connecting your account is optional. Nook only reads your playlists, and the sign-in is kept in your Keychain.</span></li>
+          <li><strong>Permissions in plain sight</strong><span>About › Permissions lists everything Nook may use, whether it's allowed, and a button to allow it or open System Settings.</span></li>
           <li><strong>Easy on your Mac</strong><span>System stats are measured only while you're looking at them, and the island's content is unloaded while it's closed.</span></li>
           <li><strong>Open source</strong><span>Every line is on <a href="https://github.com/cs-tungthanh/nook">GitHub</a>, so you can read it or build it yourself.</span></li>
         </ul>
