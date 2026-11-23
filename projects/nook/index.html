@@ -9,6 +9,7 @@
   <meta property="og:description" content="Pomodoro, power-off timer, music, screen recording, Bluetooth and system stats, one click from the menu bar.">
   <meta property="og:image" content="screens/utilities.png">
   <link rel="icon" type="image/png" href="nook.png">
+  <link rel="stylesheet" href="demo.css?v=9">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Noto+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -121,7 +122,7 @@
     .screen { position: relative; border-radius: 18px; background: var(--wall); box-shadow: var(--frame-shadow); overflow: hidden; aspect-ratio: 20 / 19; border: 1px solid var(--border); }
     .menubar { position: absolute; inset: 0 0 auto 0; height: 22px; background: rgba(255,255,255,.22); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,.65); }
     .menubar span:last-child { display: flex; gap: 10px; align-items: center; }
-    .menubar img { width: 13px; height: 13px; filter: grayscale(1) brightness(0); opacity: .7; }
+    .menubar .glyph { width: 14px; height: 14px; color: rgba(0,0,0,.75); }
     .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 19%; height: 22px; background: #000; border-radius: 0 0 9px 9px; }
     .island { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 82%; animation: drop .9s cubic-bezier(.2,.9,.25,1.05) .25s both; transform-origin: top center; }
     @keyframes drop { from { transform: translateX(-50%) scaleY(.06) scaleX(.22); opacity: .6; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
@@ -164,7 +165,7 @@
     .privacy li strong { display: block; }
     .privacy li span { color: var(--text-muted); }
 
-    .final { text-align: center; padding-top: 88px; padding-bottom: 88px; }
+    .final { text-align: center; border-top: 1px solid var(--border); padding-top: 88px; padding-bottom: 88px; }
     .final img { width: 96px; height: 96px; margin: 0 auto; }
     .final h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; margin: 16px 0 12px; }
     .final p { color: var(--text-muted); margin: 0 auto 28px; font-size: 17px; max-width: 34em; }
@@ -197,6 +198,7 @@
     <nav>
       <a class="brand" href="#"><img src="nook.png" alt="">Nook</a>
       <div class="nav-links">
+        <a class="hide-sm" href="#try">Try it</a>
         <a class="hide-sm" href="#how">How it works</a>
         <a class="hide-sm" href="#features">Features</a>
         <a class="hide-sm" href="https://github.com/cs-tungthanh/nook">GitHub</a>
@@ -216,13 +218,13 @@
           <code>brew install --cask cs-tungthanh/tap/nook</code>
           <button class="copy" type="button" data-copy="brew install --cask cs-tungthanh/tap/nook">Copy</button>
         </div>
-        <p class="note">For Apple silicon Macs with macOS 13 or later. Installs with <a href="https://brew.sh">Homebrew</a> and updates itself.</p>
+        <p class="note">For Apple silicon Macs with macOS 13 or later. Installs with <a href="https://brew.sh">Homebrew</a> and updates itself. Or <a href="#try">try it in your browser</a> first.</p>
       </div>
 
       <div class="screen" role="img" aria-label="Nook's island hanging from the notch of a Mac screen, showing the Pomodoro and Music cards and the Power Off, Screen Recording and Bluetooth tiles">
         <div class="menubar">
           <span>&#63743;&nbsp;&nbsp;Finder</span>
-          <span><span class="hide-sm">Sat 21 Nov</span><img src="nook.png" alt=""><span>9:41</span></span>
+          <span><span class="hide-sm">Sat 21 Nov</span><svg class="glyph" width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 16.5V8a6.5 6.5 0 0 1 13 0v8.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="9" cy="11" r="2.5" fill="currentColor"/></svg><span>9:41</span></span>
         </div>
         <div class="notch"></div>
         <img class="island" src="screens/utilities.png" alt="">
@@ -252,7 +254,45 @@
       </div>
     </section>
 
-    <section class="block" id="features">
+
+    <section class="block" id="try">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Try it right here</h2>
+          <p>A working copy of Nook's island with made-up data. Click the Nook icon in the menu bar, then start a focus sprint, play a station, connect a device or schedule a shutdown. Nothing here touches your computer.</p>
+        </div>
+        <div class="demo-wrap" id="nook-demo">
+          <div class="demo-stage">
+            <div class="d-screen">
+              <div class="d-menubar">
+                <div class="left"><span>&#63743;</span><span>Finder</span><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Window</span></div>
+                <div class="right">
+                  <span class="d-status"></span>
+                  <button type="button" class="d-nook-btn" data-a="toggle-island" aria-label="Open Nook"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 16.5V8a6.5 6.5 0 0 1 13 0v8.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="9" cy="11" r="2.5" fill="currentColor"/></svg><span class="ping"></span></button>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8.5a14 14 0 0 1 19 0M5.5 12a9.5 9.5 0 0 1 13 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+                  <span class="d-clock"></span>
+                </div>
+              </div>
+              <div class="d-notch"></div>
+              <div class="d-island closed" role="region" aria-label="Nook island"></div>
+              <div class="d-desk-note"></div>
+              <div class="d-hint">Click the Nook icon to open it</div>
+              <div class="d-layer"></div>
+              <div class="d-toasts" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-bar">
+          <label><input type="checkbox" id="demo-fast"> Speed up time: a minute passes every second</label>
+          <div class="btns">
+            <button type="button" class="btn ghost small" id="demo-reset">Reset demo</button>
+            <a class="btn small" href="#install">Install Nook</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block alt" id="features">
       <div class="wrap">
         <div class="section-head">
           <h2>Small tools you reach for every day</h2>
@@ -293,7 +333,7 @@
       </div>
     </section>
 
-    <section class="block alt">
+    <section class="block">
       <div class="wrap split">
         <div>
           <div class="section-head" style="margin-bottom:0">
@@ -310,7 +350,7 @@
       </div>
     </section>
 
-    <section class="block">
+    <section class="block alt">
       <div class="wrap split">
         <img class="shot" src="screens/about.png" alt="Nook's About page showing version 1.5.0, a Check for Updates button, and links to GitHub, the release notes and Permissions" loading="lazy">
         <div>
@@ -327,7 +367,7 @@
       </div>
     </section>
 
-    <section class="block alt" id="privacy">
+    <section class="block" id="privacy">
       <div class="wrap privacy">
         <div class="section-head">
           <h2>Light, local and open</h2>
@@ -365,6 +405,7 @@
     </div>
   </footer>
 
+  <script src="demo.js?v=11" defer></script>
   <script>
     // Copy the install command; fall back to selecting it if the clipboard isn't available
     document.querySelectorAll('.copy').forEach(button => {
