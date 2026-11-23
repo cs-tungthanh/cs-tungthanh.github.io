@@ -154,6 +154,8 @@
     .btn.ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--border); }
     .btn.ghost:hover { background: var(--bg-alt); filter: none; }
     .btn.small { padding: 7px 16px; font-size: 14px; }
+    .nav-links .btn { white-space: nowrap; }
+    .label-short { display: none; }
 
     /* Hero */
     .hero { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center; padding-top: 40px; padding-bottom: 80px; }
@@ -349,6 +351,8 @@
       .privacy { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
+      .label-long { display: none; }
+      .label-short { display: inline; }
       .nav-links a.hide-sm, .brand-ipa { display: none; }
       .steps, .features { grid-template-columns: 1fr; }
       .page { padding: 20px 18px 26px; }
@@ -368,6 +372,7 @@
         <a class="hide-sm" href="#features">Features</a>
         <a class="hide-sm" href="#youtube">YouTube</a>
         <a class="hide-sm" href="https://github.com/cs-tungthanh/sayly">GitHub</a>
+        <a class="btn ghost small" href="/" title="Tung Thanh's homepage"><span class="label-long">About the author</span><span class="label-short">Author</span></a>
         <a class="btn small" href="https://chromewebstore.google.com/detail/cjjpjacmmikigllekaeokclopngphbgo">Add to Chrome</a>
       </div>
     </nav>
